@@ -58,11 +58,31 @@ const postType = new GraphQLObjectType({
   }
 })
 
+const queryType = new GraphQLObjectType({
+  name: 'query',
+  fields: {
+    post: {
+      type: postType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (source, { id }) => {
+        return posts[id]
+      }
+    },
+    posts: {
+      type: new GraphQLList(postType),
+      resolve: () => {
+        return posts
+      }
+    }
+  }
+})
+
+
 
 const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-
-  })
+  query: queryType
 })
 
 module.exports = schema;
